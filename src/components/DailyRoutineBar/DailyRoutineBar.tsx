@@ -7,6 +7,9 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(10, 10%);
   grid-template-rows: 40px 40px;
+  div {
+    border: 1px solid black;
+  }
 `;
 
 function DailyRoutineBar() {
