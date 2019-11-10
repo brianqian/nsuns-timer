@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import Clock from './Clock';
 
 const Container = styled.div`
-  height: 40%;
-  width: 40%;
+  height: 100%;
+  width: 100%;
   border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 `;
 
 const Circle = styled.div`
@@ -17,12 +21,19 @@ const Circle = styled.div`
 `;
 
 const StyledClock = styled(Clock)`
+  text-align: center;
+  font-size: 18px;
+  line-height: 18px;
+  padding: 91px 0;
   position: absolute;
-  top: 50%;
-  left: 50%;
+  width: 100%;
 `;
 
-function RestButton({ totalSeconds = 61 }) {
+function Stopwatch({ totalSeconds = 61 }) {
+  //This is the outside container that handles layout and controls the state of total seconds
+  // StyledClock should be responsible for rendering the state.
+  // Pause/play should be handled by parent since playstate affects spotify controls (future)
+  //
   const [timerRunning, setTimerRunning] = useState(false);
 
   const handleClick = () => {
@@ -39,4 +50,4 @@ function RestButton({ totalSeconds = 61 }) {
   );
 }
 
-export default RestButton;
+export default Stopwatch;

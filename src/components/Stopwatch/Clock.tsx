@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import styled from 'styled-components/macro';
+
+const Container = styled.div``;
 
 interface P {
   isRunning: boolean;
   totalSeconds: number;
+  className?: string;
 }
 
-const Clock = ({ isRunning, totalSeconds }: P) => {
+const Clock = ({ isRunning, totalSeconds, className }: P) => {
   const [_totalSeconds, setTotalSeconds] = useState(totalSeconds);
   const [displayTime, setDisplayTime] = useState('0:00');
   // const [startTime, setStartTime] = useState(new Date().getTime());
@@ -14,9 +18,8 @@ const Clock = ({ isRunning, totalSeconds }: P) => {
     console.log('USE EFFECT RUNNING', isRunning, _totalSeconds);
     setDisplayTime(formatSecondsToString(_totalSeconds));
     let interval: any;
-    if (isRunning) {
+    if (isRunning && _totalSeconds > 0) {
       interval = setInterval(() => {
-        console.log('tick');
         setTotalSeconds(_totalSeconds - 1);
         setDisplayTime(formatSecondsToString(_totalSeconds));
       }, 1000);
@@ -30,22 +33,11 @@ const Clock = ({ isRunning, totalSeconds }: P) => {
       if (seconds < 10) seconds = '0' + seconds;
       return `${minutes}:${seconds}`;
     }
-    // if (isRunning) {
-    //   setStartTime(new Date().getTime());
-    //   clearInterval(interval);
-    // } else {
-    //   interval = setInterval(() => {
-    //     const currentTime = new Date().getTime();
-    //     const elapsedTimeInSeconds = (currentTime - startTime) / 1000;
-    //     setTotalSeconds(_totalSeconds - elapsedTimeInSeconds)
-    //     setDisplayTime(formatSecondsToString(_totalSeconds))
-    //   }, 1000);
-    // }
 
     return () => clearInterval(interval);
   }, [isRunning, totalSeconds, _totalSeconds]);
 
-  return <div>{displayTime}</div>;
+  return <Container className={className}>{displayTime}</Container>;
 };
 
 export default Clock;

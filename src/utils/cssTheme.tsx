@@ -10,6 +10,11 @@ const theme = {
     blue: '#225371',
     black: '#282829',
   },
+  // ORIGINAL VALUE bs: "0 12px 24px 0 rgba(0, 0, 0, 0.09)",
+  bs: '0 12px 24px 0 rgba(0, 0, 0, 1)',
+  textFont: 'Source Sans Pro',
+  accent: 'darkorange',
+  clockWidth: '200px',
   changeOpacity: (color: string, opacity: number) => {
     const opacityHexCodes: HexCodes = {
       0: '00',
@@ -124,10 +129,6 @@ const theme = {
     yellow8: '#975A16',
     yellow9: '#744210',
   },
-  // ORIGINAL VALUE bs: "0 12px 24px 0 rgba(0, 0, 0, 0.09)",
-  bs: '0 12px 24px 0 rgba(0, 0, 0, 1)',
-  textFont: 'Source Sans Pro',
-  accent: 'darkorange',
 };
 
 export { theme };
