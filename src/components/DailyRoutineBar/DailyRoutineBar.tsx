@@ -3,6 +3,7 @@ import styled from 'styled-components/macro';
 
 const Container = styled.div`
   width: 100%;
+  min-width: 1000px;
   height: 80px;
   display: grid;
   grid-template-columns: repeat(10, 10%);

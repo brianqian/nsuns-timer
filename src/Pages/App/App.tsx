@@ -5,7 +5,7 @@ import styled, { createGlobalStyle, ThemeProvider } from 'styled-components/macr
 import { theme } from '../../utils/cssTheme';
 
 const GlobalStyle = createGlobalStyle`
-@import url('https://fonts.googleapis.com/css?family=Raleway|Cabin|Cormorant+Garamond&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Raleway|Cabin&display=swap');
 body, html{
   font-family: 'Cabin';
   max-width: 100vw;
@@ -34,11 +34,15 @@ const tempDatabase = {
 };
 
 function App() {
+  // UserSettings state should be stored in...
+  // 1. Local Storage vs Cookies?
+  // 2. Database?
+  // (3.) Then loaded into Context?
   return (
     <ThemeProvider theme={theme}>
       <Container>
         <GlobalStyle />
-        <Main />
+        <Main time={tempDatabase.defaultLength} />
         <Nav />
       </Container>
     </ThemeProvider>
