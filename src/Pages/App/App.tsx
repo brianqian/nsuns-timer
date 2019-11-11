@@ -30,7 +30,7 @@ const Container = styled.div`
 `;
 
 const tempDatabase = {
-  defaultLength: 60,
+  defaultLength: 123,
 };
 
 function App() {
