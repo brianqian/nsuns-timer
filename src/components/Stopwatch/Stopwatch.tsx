@@ -51,6 +51,7 @@ function Stopwatch({ totalSeconds = 60, isRunning, toggle, ms }: Props) {
         setActualSeconds(actualSeconds - 1);
       }, 1000);
     }
+    console.log(interval);
     return () => clearInterval(interval);
   }, [isRunning, actualSeconds]);
 

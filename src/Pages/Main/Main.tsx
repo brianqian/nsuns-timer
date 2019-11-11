@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 import Stopwatch from '../../components/Stopwatch/Stopwatch';
 import DailyRoutineBar from '../../components/DailyRoutineBar/DailyRoutineBar';
+import { DailySplitVariation } from '../../data/presetLiftValues';
 
 interface Props {
   time: number;
@@ -18,12 +19,18 @@ const Container = styled.div`
   }
 `;
 
+const tempDailyRoutine = {
+  variationName: '',
+};
+
 function Main({ time }: Props) {
   const [isRunning, setIsRunning] = useState(false);
 
   const toggleStopwatch = (): void => {
     setIsRunning(!isRunning);
   };
+
+  const myLifts = new DailySplitVariation('5day', 5);
 
   return (
     <Container>
