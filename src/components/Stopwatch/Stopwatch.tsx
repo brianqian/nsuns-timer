@@ -24,9 +24,30 @@ function Stopwatch({ totalSeconds = 60, isRunning, toggle }: Props) {
   // This is the outside container that handles layout and controls the state of total seconds
   // Pause/play should be handled by parent since playstate affects spotify controls (future)
   //
+  const secondsInMs = totalSeconds * 1000;
 
-  const [initialTime, setInitialTime] = useState(0);
-  const [msRemaining, setMsRemaining] = useState(totalSeconds * 1000);
+  const [initialTime, setInitialTime] = useState(new Date().getTime());
+  const [msRemaining, setMsRemaining] = useState(secondsInMs);
+
+  // const [state, dispatch] = useReducer(reducer, initialState);
+
+  // const initialState = {};
+
+  // function reducer(state, action) {
+  //   const elapsedTime = initialTime - new Date().getTime();
+  //   if (action.type === 'tick') {
+  //     return ;
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   setInitialTime(new Date().getTime());
+  //   const id = setInterval(() => {
+  //     dispatch({type: 'tick'})
+  //   }, 89);
+
+  //   return () => clearInterval(id);
+  // }, [isRunning]);
 
   useEffect(() => {
     let interval: any;
@@ -38,7 +59,7 @@ function Stopwatch({ totalSeconds = 60, isRunning, toggle }: Props) {
       }, 89);
     }
     return () => clearInterval(interval);
-  }, [isRunning, msRemaining]);
+  }, [msRemaining]);
 
   const formatSeconds = (initialMs: number) => {
     const minuteLength = 1000 * 60;
