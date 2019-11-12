@@ -21,23 +21,29 @@ const Container = styled.div`
 `;
 
 function Stopwatch({ totalSeconds = 60, isRunning, toggle }: Props) {
-  // This is the outside container that handles layout and controls the state of total seconds
-  // Pause/play should be handled by parent since playstate affects spotify controls (future)
-  //
-
+  // Stopwatch calculates time elapsed by comparing the diff of setInterval and initialTime
+  // If stopwatch is paused, initalTime is reset to 0.
+  // When stopwatch is resumed, initial time is reset
+  const timeInMs = totalSeconds * 1000;
   const [initialTime, setInitialTime] = useState(0);
-  const [msRemaining, setMsRemaining] = useState(totalSeconds * 1000);
+  const [msRemaining, setMsRemaining] = useState(timeInMs);
+  // useEffect(() => {
+  //   console.log('use effect, paused/resumed');
+  //   setInitialTime(new Date().getTime());
+  //   if (!isRunning) console.log('paused', initialTime);
+  // }, [isRunning, msRemaining]);
 
   useEffect(() => {
-    let interval: any;
+    let id: number;
     setInitialTime(new Date().getTime());
+    if (!isRunning) console.log('paused', initialTime);
     if (isRunning && msRemaining > 0) {
-      interval = setInterval(() => {
+      id = setInterval(() => {
         const elapsedMs = new Date().getTime() - initialTime;
         setMsRemaining(msRemaining - elapsedMs);
       }, 89);
     }
-    return () => clearInterval(interval);
+    return () => clearInterval(id);
   }, [isRunning, msRemaining]);
 
   const formatSeconds = (initialMs: number) => {
@@ -53,18 +59,23 @@ function Stopwatch({ totalSeconds = 60, isRunning, toggle }: Props) {
     if (minutes < 10) minutes = '0' + minutes;
     if (seconds < 10) seconds = '0' + seconds;
     // if (hs < 0) hs = '0' + hs;
-    return `${minutes}:${seconds}:${hs}`;
+    const finalString = `${minutes}:${seconds}:${hs}`;
+    console.log('TCL: formatSeconds -> finalString', initialMs, finalString);
+    return finalString;
   };
 
   return (
-    <Container onClick={toggle}>
-      <CircularProgressbar
-        value={1 - msRemaining / (totalSeconds * 1000)}
-        maxValue={1}
-        text={formatSeconds(msRemaining)}
-      />
-      <p>Status: {isRunning ? 'running' : 'paused'}</p>
-    </Container>
+    <>
+      <Container onClick={toggle}>
+        <CircularProgressbar
+          value={1 - msRemaining / (totalSeconds * 1000)}
+          maxValue={1}
+          text={formatSeconds(msRemaining)}
+        />
+        <p>Status: {isRunning ? 'running' : 'paused'}</p>
+      </Container>
+      <button onClick={() => console.log(initialTime)}>PRESS HERE</button>
+    </>
   );
 }
 
