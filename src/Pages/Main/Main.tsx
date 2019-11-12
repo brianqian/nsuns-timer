@@ -30,15 +30,13 @@ function Main({ time }: Props) {
     setIsRunning(!isRunning);
   };
 
-  const myLifts = new DailySplitVariation('5day', 5);
-
   return (
     <Container>
       <header>
         <h1>MONDAY</h1>
         <DailyRoutineBar />
       </header>
-      <Stopwatch totalSeconds={time} isRunning={isRunning} toggle={toggleStopwatch} ms />
+      <Stopwatch totalSeconds={time} isRunning={isRunning} toggle={toggleStopwatch} />
     </Container>
   );
 }
