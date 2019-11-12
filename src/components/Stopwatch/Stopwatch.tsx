@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import styled from 'styled-components/macro';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
@@ -20,59 +20,55 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const Circle = styled.div`
-  height: 200px;
-  width: 200px;
-  border: 8px solid red;
-  border-radius: 100px;
-  position: relative;
-  p {
-    text-align: center;
-    font-size: 18px;
-    line-height: 18px;
-    padding: 91px 0;
-    position: absolute;
-    width: 100%;
-  }
-`;
-
-function Stopwatch({ totalSeconds = 60, isRunning, toggle, ms }: Props) {
+function Stopwatch({ totalSeconds = 60, isRunning, toggle }: Props) {
   // This is the outside container that handles layout and controls the state of total seconds
-  // StyledClock should be responsible for rendering the state.
   // Pause/play should be handled by parent since playstate affects spotify controls (future)
   //
+  const [msRemaining, dispatch] = useReducer(reducer, totalSeconds * 1000);
 
-  const [actualSeconds, setActualSeconds] = useState(totalSeconds);
+  function reducer(state: number, action: any) {
+    if (action.type === 'tick') {
+      return state - 100;
+    }
+    return state;
+  }
 
   useEffect(() => {
+    console.log('useeffect firing');
+    console.log(msRemaining);
     let interval: any;
-    if (isRunning && actualSeconds > 0) {
+    if (isRunning && msRemaining > 0) {
       interval = setInterval(() => {
-        setActualSeconds(actualSeconds - 1);
-      }, 1000);
+        console.log('tick');
+        dispatch({ type: 'tick' });
+      }, 100);
     }
-    console.log(interval);
     return () => clearInterval(interval);
-  }, [isRunning, actualSeconds]);
+  }, [dispatch, isRunning]);
 
-  const formatSeconds = (initialSeconds: number) => {
-    let minutes: number | string = Math.floor(initialSeconds / 60);
-    let seconds: number | string = initialSeconds % 60;
+  const formatSeconds = (initialMs: number) => {
+    const minuteLength = 1000 * 60;
+    const secondLength = 1000;
+    let minutes: number | string = Math.floor(initialMs / minuteLength);
+    let seconds: number | string = Math.floor((initialMs - minutes * minuteLength) / secondLength);
+    let hs: number | string = (
+      (initialMs - minutes * minuteLength - seconds * secondLength) /
+      10
+    ).toFixed(0);
+
     if (minutes < 10) minutes = '0' + minutes;
     if (seconds < 10) seconds = '0' + seconds;
-    return `${minutes}:${seconds}`;
+    // if (hs < 0) hs = '0' + hs;
+    return `${minutes}:${seconds}:${hs}`;
   };
 
   return (
     <Container onClick={toggle}>
       <CircularProgressbar
-        value={1 - actualSeconds / totalSeconds}
+        value={1 - msRemaining / (totalSeconds * 1000)}
         maxValue={1}
-        text={formatSeconds(actualSeconds)}
+        text={formatSeconds(msRemaining)}
       />
-      {/* <Circle onClick={toggle}>
-        <p>{formatSeconds(actualSeconds)}</p>
-      </Circle> */}
       <p>Status: {isRunning ? 'running' : 'paused'}</p>
     </Container>
   );
